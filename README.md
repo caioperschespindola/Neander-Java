@@ -1,9 +1,8 @@
-# Neander-Java
+# Neander-Java Documentation
 Java version of the Neander Computer invented by Professor Raul F. Weber.
 
-NEANDER JAVA DOCUMENTATION
-
 Created by Raul F. Weber
+
 Java implementation by Caio Persch Espindola.
 
 Version: v1.0
