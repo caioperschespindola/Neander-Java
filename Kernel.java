@@ -1,26 +1,26 @@
 public class Kernel {
-    byte ac = Mem.sign(0);
+    private byte ac = Mem.sign(0); //Acumulator register
     
     Mem ram;
     
-    private int pc;
+    private int pc; //Current line to be executed
     
     private boolean flagN = (ac < 0);
     private boolean flagZ = (ac == 0);
     
     private boolean running;
     
-    public static final byte NOP = (byte) 0;
-    public static final byte STA = (byte) 16;
-    public static final byte LDA = (byte) 32;
-    public static final byte ADD = (byte) 48;
-    public static final byte OR = (byte) 64;
-    public static final byte AND = (byte) 80;
-    public static final byte NOT = (byte) 96;
-    public static final byte JMP =  (byte) 128;
-    public static final byte JN = (byte) 144;
-    public static final byte JZ = (byte) 160;
-    public static final byte HLT = (byte) 240;
+    public static final byte NOP = (byte) 0; //No operation
+    public static final byte STA = (byte) 16; //Stores AC in address
+    public static final byte LDA = (byte) 32; //Loads address to AC
+    public static final byte ADD = (byte) 48; //Adds address to AC
+    public static final byte OR = (byte) 64; //Bitwise OR with AC and address
+    public static final byte AND = (byte) 80; //Bitwise AND with AC and address
+    public static final byte NOT = (byte) 96; //Bitwise NOT on AC
+    public static final byte JMP =  (byte) 128; //Loads address to PC
+    public static final byte JN = (byte) 144; //Loads address to PC if AC is negative
+    public static final byte JZ = (byte) 160; //Loads address to PC if AC is zero
+    public static final byte HLT = (byte) 240; //Stops execution
 
     public Kernel(){
         ram = new Mem();
@@ -42,9 +42,13 @@ public class Kernel {
             current = ram.getAddress(pc);
             
             if (pc+1 >= ram.diskSize){
-                next = 0;
+
+                next = 0; //Avoids index error
+
             } else {
-                next = Mem.unsign(ram.getAddress(pc+1));
+
+                next = Mem.unsign(ram.getAddress(pc+1)); //Address for 2-byte commands
+
             }
             
             updateNZ();
@@ -103,7 +107,7 @@ public class Kernel {
     }
 
     private void cmdSTA(int address){
-        ram.setAddress(ac, address);
+        ram.setAddress(address, ac);
         pc = pc+1;
     }
 

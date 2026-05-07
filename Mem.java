@@ -10,8 +10,8 @@ public class Mem {
         for (int i = 0; i < diskSize-1; i++){memory[i] = 0;}
         
         int halfway = diskSize / 2;
-        memory[halfway-1] = sign(240);
-        memory[diskSize-1] = sign(240);
+        memory[halfway-1] = sign(240); //Default halt
+        memory[diskSize-1] = sign(240); //Default halt
     }
 
     public static int unsign(byte a){ // takes (-128 to +127) and converts to (0 to 255)
@@ -24,7 +24,7 @@ public class Mem {
         return b;
     }
 
-    public void setAddress(byte value, int address){
+    public void setAddress(int address, byte value){
         if (address < diskSize && address >= 0)
             memory[address] = sign(value);
     }
@@ -40,7 +40,7 @@ public class Mem {
     
     public void writeToMemory(int start, ArrayList<Integer> data){
         for (int i = 0; i < data.size()-1; i++){
-            setAddress(sign(data.get(i)), start+i);
+            setAddress(start+i, sign(data.get(i)));
         }
     }
 
