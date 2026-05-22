@@ -49,7 +49,7 @@ public class Shell{
 
         else if (cmd.equals("run")){
 
-            os.runProgram();
+            shlRUN();
 
         } else if (cmd.equals("clear")){
             
@@ -79,8 +79,12 @@ public class Shell{
         System.out.print("$$");
         int adr = input.nextInt();
 
-        System.out.println(os.ram.getAddress(adr));
-        
+        if (adr < 128)
+            System.out.println(Mem.unsign(os.ram.getAddress(adr)));
+        else {
+            System.out.println(os.ram.getAddress(adr));
+        }
+
         input.nextLine(); //clears buffer
 
     }
@@ -135,6 +139,16 @@ public class Shell{
         os.ram.writeToMemory(start, data);
 
         input.nextLine(); //clears buffer
+
+    }
+
+    public void shlRUN(){
+
+        long time = System.nanoTime();
+
+        os.runProgram();
+
+        System.out.println("Run Time: " + ((System.nanoTime() - time)/1000000) + " ms");
 
     }
 }

@@ -17,7 +17,7 @@ read: receives a start address and an end address and returns memory addresses a
 
 write: receives a starting address and an arbitrary ammount of values, and writes them in memory in that order. breaks if a negative number is entered.
 
-run: runs the program.
+run: runs the program and displays its run time.
 
 clear: sets all memory addresses to zero. WARNING: this will also remove the default halt commands on addreses 127 and 255.
 

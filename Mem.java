@@ -46,7 +46,10 @@ public class Mem {
 
     public void readMemory(int start, int end){
         for (int i = start; i <= end; i++) {
-            System.out.println(i + ": " + getAddress(i));
+            if (i<128)
+                System.out.println(i + ": " + unsign(getAddress(i)));
+            else
+                System.out.println(i + ": " + getAddress(i));
         }
     }
 }
