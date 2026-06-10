@@ -53,23 +53,23 @@ public class Shell{
 
         } else if (cmd.equals("clear")){
             
-            os.ram.clear();
+            shlCLEAR();
 
         } else if (cmd.equals("quit")){
 
-            c = true;
+            shlQUIT();
 
         } else if (cmd.equals("ac")){
 
-            System.out.println(os.getAC());
+            shlAC();
 
         } else if (cmd.equals("fn")){
 
-            System.out.println(os.getAC() < 0);
+            shlFN();
 
         } else if (cmd.equals("fz")){
 
-            System.out.println(os.getAC() == 0);
+            shlFZ();
 
         }
     }
@@ -149,6 +149,36 @@ public class Shell{
         os.runProgram();
 
         System.out.println("Run Time: " + ((System.nanoTime() - time)/1000000) + " ms");
+
+    }
+
+    public void shlCLEAR(){
+
+        os.ram.clear();
+
+    }
+
+    public void shlQUIT(){
+
+        c = true;
+
+    }
+
+    public void shlAC(){
+
+        System.out.println(os.getAC());
+
+    }
+
+    public void shlFN(){
+
+        System.out.println(os.getAC() < 0);
+
+    }
+
+    public void shlFZ(){
+
+        System.out.println(os.getAC() == 0);
 
     }
 }

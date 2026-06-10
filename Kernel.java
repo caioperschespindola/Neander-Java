@@ -103,6 +103,8 @@ public class Kernel {
             case HLT:
                 cmdHLT();
                 break;
+            default:
+                break;
         }
     }
 
@@ -136,18 +138,18 @@ public class Kernel {
     }
 
     private void cmdJMP(int address){
-        pc = ram.getAddress(address);
+        pc = address;
     }
 
     private void cmdJN(int address){
         if (flagN){
-            pc = ram.getAddress(address);
+            pc = address;
         }
     }
 
     private void cmdJZ(int address){
         if (flagZ){
-            pc = ram.getAddress(address);
+            pc = address;
         }
     }
 
