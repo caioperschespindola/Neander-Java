@@ -53,7 +53,7 @@ public class Shell{
 
         } else if (cmd.equals("clear")){
             
-            os.ram.clear();
+            shlCLEAR();
 
         } else if (cmd.equals("quit")){
 
@@ -71,20 +71,23 @@ public class Shell{
 
             System.out.println(os.getAC() == 0);
 
+        } else if (cmd.equals("mc")){
+
+            System.out.println(os.getMC());
+
         }
     }
 
     public void shlGET(){
 
         System.out.print("$$");
+        int par = input.nextInt();
+
+        System.out.print("$$");
         int adr = input.nextInt();
 
-        if (adr < 128)
-            System.out.println(Mem.unsign(os.ram.getAddress(adr)));
-        else {
-            System.out.println(os.ram.getAddress(adr));
-        }
-
+        System.out.println(os.ram.getAddress(par, adr));
+        
         input.nextLine(); //clears buffer
 
     }
@@ -92,12 +95,15 @@ public class Shell{
     public void shlSET(){
 
         System.out.print("$$");
+        int par = input.nextInt();
+
+        System.out.print("$$");
         int adr = input.nextInt();
 
         System.out.print("$$");
         byte val = Mem.sign(input.nextInt());
 
-        os.ram.setAddress(adr, val);
+        os.ram.setAddress(par, adr, val);
 
         System.out.println("");
 
@@ -108,18 +114,24 @@ public class Shell{
     public void shlREAD(){
 
         System.out.print("$$");
+        int par = input.nextInt();
+
+        System.out.print("$$");
         int start = input.nextInt();
 
         System.out.print("$$");
         int end = input.nextInt();
 
-        os.ram.readMemory(start, end);
+        os.ram.readMemory(par, start, end);
 
         input.nextLine(); //clears buffer
 
     }
 
     public void shlWRITE(){
+
+        System.out.print("$$");
+        int par = input.nextInt();
 
         System.out.print("$$");
         int start = input.nextInt();
@@ -136,19 +148,25 @@ public class Shell{
             data.add(num);
         }
             
-        os.ram.writeToMemory(start, data);
+        os.ram.writeToMemory(par, start, data);
 
         input.nextLine(); //clears buffer
 
     }
 
+    public void shlCLEAR(){
+        
+        System.out.print("$$");
+        int par = input.nextInt();
+        
+        os.ram.clear(par);
+
+        input.nextLine(); //clears buffer
+    }
+
     public void shlRUN(){
 
-        long time = System.nanoTime();
-
         os.runProgram();
-
-        System.out.println("Run Time: " + ((System.nanoTime() - time)/1000000) + " ms");
 
     }
 }
