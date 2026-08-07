@@ -78,7 +78,7 @@ class Mem{
         }
 
         void writeMemory(int start, vector<signed char> data){
-            for (int i = start; i < data.size(); i++){
+            for (int i = 0; i < data.size(); i++){
                 setAddress(start+i, data[i]);
             }
         }
