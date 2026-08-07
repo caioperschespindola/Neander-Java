@@ -27,57 +27,57 @@ public class Shell{
 
     public void prompt(){
 
-        System.out.print("$");
-        String cmd = input.nextLine();
+        System.out.print(">");
+        String cmdfull = input.nextLine();
+        String[] cmd = cmdfull.split("[\s]");
         System.out.println("");
         
-        if (cmd.equals("get")){
+        if (cmd[0].equals("get")){
             
-            shlGET();}
+            shlGET(cmd[1]);}
 
-        else if (cmd.equals("set")){
+        else if (cmd[0].equals("set")){
             
-            shlSET();}
+            shlSET(cmd[1], cmd[2]);}
 
-        else if (cmd.equals("read")){
+        else if (cmd[0].equals("read")){
             
-            shlREAD();}
+            shlREAD(cmd[1], cmd[2]);}
 
-        else if (cmd.equals("write")){
+        else if (cmd[0].equals("write")){
             
-            shlWRITE();}
+            shlWRITE(cmd[1]);}
 
-        else if (cmd.equals("run")){
+        else if (cmd[0].equals("run")){
 
             shlRUN();
 
-        } else if (cmd.equals("clear")){
+        } else if (cmd[0].equals("clear")){
             
             shlCLEAR();
 
-        } else if (cmd.equals("quit")){
+        } else if (cmd[0].equals("quit")){
 
             shlQUIT();
 
-        } else if (cmd.equals("ac")){
+        } else if (cmd[0].equals("ac")){
 
             shlAC();
 
-        } else if (cmd.equals("fn")){
+        } else if (cmd[0].equals("fn")){
 
             shlFN();
 
-        } else if (cmd.equals("fz")){
+        } else if (cmd[0].equals("fz")){
 
             shlFZ();
 
         }
     }
 
-    public void shlGET(){
+    public void shlGET(String address){
 
-        System.out.print("$$");
-        int adr = input.nextInt();
+        int adr = Integer.parseInt(address);
 
         if (adr < 128)
             System.out.println(Mem.unsign(os.ram.getAddress(adr)));
@@ -85,58 +85,43 @@ public class Shell{
             System.out.println(os.ram.getAddress(adr));
         }
 
-        input.nextLine(); //clears buffer
-
     }
 
-    public void shlSET(){
+    public void shlSET(String address, String value){
 
-        System.out.print("$$");
-        int adr = input.nextInt();
-
-        System.out.print("$$");
-        byte val = Mem.sign(input.nextInt());
+        int adr = Integer.parseInt(address);
+        byte val = Mem.sign(Integer.parseInt(value));
 
         os.ram.setAddress(adr, val);
 
-        System.out.println("");
+    }
 
-        input.nextLine(); //clears buffer
+    public void shlREAD(String start, String end){
+
+        int st = Integer.parseInt(start);
+        int nd = Integer.parseInt(end);
+
+        os.ram.readMemory(st, nd);
 
     }
 
-    public void shlREAD(){
+    public void shlWRITE(String start){
 
-        System.out.print("$$");
-        int start = input.nextInt();
-
-        System.out.print("$$");
-        int end = input.nextInt();
-
-        os.ram.readMemory(start, end);
-
-        input.nextLine(); //clears buffer
-
-    }
-
-    public void shlWRITE(){
-
-        System.out.print("$$");
-        int start = input.nextInt();
+        int st = Integer.parseInt(start);
 
         int num;
         ArrayList<Integer> data = new ArrayList<Integer>();
             
         while (true) { 
-            System.out.print("$$$");
+            System.out.print(">>");
             num = input.nextInt();
                 
             if (num < 0) {break;}
 
             data.add(num);
         }
-            
-        os.ram.writeToMemory(start, data);
+        
+        os.ram.writeToMemory(st, data);
 
         input.nextLine(); //clears buffer
 
