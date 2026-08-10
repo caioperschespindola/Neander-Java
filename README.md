@@ -27,4 +27,8 @@ fn: returns the current value stored in the Negative Flag.
 
 fz: returns the current value stored in the Zero Flag.
 
+opcodes: displays all opcodes.
+
+help: displays all shell commands.
+
 quit: ends the Neander Program.

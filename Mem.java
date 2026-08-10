@@ -25,8 +25,11 @@ public class Mem {
     }
 
     public void setAddress(int address, byte value){
-        if (address < diskSize && address >= 0)
+        if (address < diskSize && address >= 0){
             memory[address] = sign(value);
+        } else {
+            throw new ArrayIndexOutOfBoundsException("Index " + address + " out of bounds for length " + diskSize);
+        }
     }
 
     public byte getAddress(int address){
