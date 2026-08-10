@@ -149,7 +149,7 @@ public class Shell{
 
         os.runProgram();
 
-        System.out.println("Run Time: " + ((System.nanoTime() - time)/1000000) + " ms");
+        System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms");
 
     }
 
