@@ -19,6 +19,8 @@ public class Shell{
 
         ui.c = false;
 
+        System.out.println("Neander v1.3\nCompiled .jar for the Neander Virtual Machine.\nCreated by Prof. Raul F. Weber\nImplemented by Caio Persch Espindola\n\n");
+
         while (!ui.c){
             try {
 
