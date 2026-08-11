@@ -144,12 +144,16 @@ public class Kernel {
     private void cmdJN(int address){
         if (flagN){
             pc = address;
+        } else {
+            pc++;
         }
     }
 
     private void cmdJZ(int address){
         if (flagZ){
             pc = address;
+        } else {
+            pc++;
         }
     }
 
