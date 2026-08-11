@@ -5,7 +5,7 @@ Created by Raul F. Weber
 
 Java implementation by Caio Persch Espindola.
 
-Version: v1.2
+Version: v1.3
 
 Neander Shell commands:
 
