@@ -1,3 +1,5 @@
+
+
 public class Kernel {
     private byte ac = Mem.sign(0); //Acumulator register
     
@@ -30,7 +32,8 @@ public class Kernel {
         return ac;
     }
 
-    public void runProgram(){
+    public void runProgram(long time){
+        
         int next;
         byte current;
 
@@ -39,6 +42,7 @@ public class Kernel {
         ac = 0;
         
         for (pc = 0; running == true; pc++){
+
             current = ram.getAddress(pc);
             
             if (pc+1 >= ram.diskSize){
@@ -138,12 +142,12 @@ public class Kernel {
     }
 
     private void cmdJMP(int address){
-        pc = address;
+        pc = address - 1;
     }
 
     private void cmdJN(int address){
         if (flagN){
-            pc = address;
+            pc = address -1;
         } else {
             pc++;
         }
@@ -151,7 +155,7 @@ public class Kernel {
 
     private void cmdJZ(int address){
         if (flagZ){
-            pc = address;
+            pc = address -1;
         } else {
             pc++;
         }

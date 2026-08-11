@@ -127,14 +127,18 @@ public class Shell{
 
         int num;
         ArrayList<Integer> data = new ArrayList<Integer>();
+
+        int i = st;
             
         while (true) { 
-            System.out.print(">>");
+            System.out.print(i + " >> ");
             num = input.nextInt();
                 
             if (num < 0) {break;}
 
             data.add(num);
+
+            i++;
         }
         
         os.ram.writeToMemory(st, data);
@@ -147,7 +151,7 @@ public class Shell{
 
         long time = System.nanoTime();
 
-        os.runProgram();
+        os.runProgram(time);
 
         System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms");
 
