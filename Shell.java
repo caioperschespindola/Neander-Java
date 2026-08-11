@@ -19,65 +19,83 @@ public class Shell{
 
         ui.c = false;
 
+        System.out.println("Neander v1.3\nCompiled .jar for the Neander Virtual Machine.\nCreated by Prof. Raul F. Weber\nImplemented by Caio Persch Espindola\n\n");
+
         while (!ui.c){
-            ui.prompt();
+            try {
+
+                ui.prompt();
+
+            } catch(Exception e) {
+
+                System.out.println("Error: " + e.getMessage());
+
+            }
         }
         
     }
 
     public void prompt(){
 
-        System.out.print("$");
-        String cmd = input.nextLine();
+        System.out.print(">");
+        String cmdfull = input.nextLine();
+        String[] cmd = cmdfull.split("[\s]");
         System.out.println("");
         
-        if (cmd.equals("get")){
+        if (cmd[0].equals("get")){
             
-            shlGET();}
+            shlGET(cmd[1]);}
 
-        else if (cmd.equals("set")){
+        else if (cmd[0].equals("set")){
             
-            shlSET();}
+            shlSET(cmd[1], cmd[2]);}
 
-        else if (cmd.equals("read")){
+        else if (cmd[0].equals("read")){
             
-            shlREAD();}
+            shlREAD(cmd[1], cmd[2]);}
 
-        else if (cmd.equals("write")){
+        else if (cmd[0].equals("write")){
             
-            shlWRITE();}
+            shlWRITE(cmd[1]);}
 
-        else if (cmd.equals("run")){
+        else if (cmd[0].equals("run")){
 
             shlRUN();
 
-        } else if (cmd.equals("clear")){
+        } else if (cmd[0].equals("clear")){
             
             shlCLEAR();
 
-        } else if (cmd.equals("quit")){
+        } else if (cmd[0].equals("quit")){
 
             shlQUIT();
 
-        } else if (cmd.equals("ac")){
+        } else if (cmd[0].equals("ac")){
 
             shlAC();
 
-        } else if (cmd.equals("fn")){
+        } else if (cmd[0].equals("fn")){
 
             shlFN();
 
-        } else if (cmd.equals("fz")){
+        } else if (cmd[0].equals("fz")){
 
             shlFZ();
+
+        } else if (cmd[0].equals("opcodes")) {
+            
+            shlOPCODES();
+
+        } else if (cmd[0].equals("help")) {
+            
+            shlHELP();
 
         }
     }
 
-    public void shlGET(){
+    public void shlGET(String address){
 
-        System.out.print("$$");
-        int adr = input.nextInt();
+        int adr = Integer.parseInt(address);
 
         if (adr < 128)
             System.out.println(Mem.unsign(os.ram.getAddress(adr)));
@@ -85,58 +103,47 @@ public class Shell{
             System.out.println(os.ram.getAddress(adr));
         }
 
-        input.nextLine(); //clears buffer
-
     }
 
-    public void shlSET(){
+    public void shlSET(String address, String value){
 
-        System.out.print("$$");
-        int adr = input.nextInt();
-
-        System.out.print("$$");
-        byte val = Mem.sign(input.nextInt());
+        int adr = Integer.parseInt(address);
+        byte val = Mem.sign(Integer.parseInt(value));
 
         os.ram.setAddress(adr, val);
 
-        System.out.println("");
+    }
 
-        input.nextLine(); //clears buffer
+    public void shlREAD(String start, String end){
+
+        int st = Integer.parseInt(start);
+        int nd = Integer.parseInt(end);
+
+        os.ram.readMemory(st, nd);
 
     }
 
-    public void shlREAD(){
+    public void shlWRITE(String start){
 
-        System.out.print("$$");
-        int start = input.nextInt();
-
-        System.out.print("$$");
-        int end = input.nextInt();
-
-        os.ram.readMemory(start, end);
-
-        input.nextLine(); //clears buffer
-
-    }
-
-    public void shlWRITE(){
-
-        System.out.print("$$");
-        int start = input.nextInt();
+        int st = Integer.parseInt(start);
 
         int num;
         ArrayList<Integer> data = new ArrayList<Integer>();
+
+        int i = st;
             
         while (true) { 
-            System.out.print("$$$");
+            System.out.print(i + " >> ");
             num = input.nextInt();
                 
             if (num < 0) {break;}
 
             data.add(num);
+
+            i++;
         }
-            
-        os.ram.writeToMemory(start, data);
+        
+        os.ram.writeToMemory(st, data);
 
         input.nextLine(); //clears buffer
 
@@ -146,9 +153,9 @@ public class Shell{
 
         long time = System.nanoTime();
 
-        os.runProgram();
+        os.runProgram(time);
 
-        System.out.println("Run Time: " + ((System.nanoTime() - time)/1000000) + " ms");
+        System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms");
 
     }
 
@@ -179,6 +186,43 @@ public class Shell{
     public void shlFZ(){
 
         System.out.println(os.getAC() == 0);
+
+    }
+
+    public void shlOPCODES(){
+
+        System.out.println("""
+            NOP =  0;  //No operation
+            STA = 16;  //Stores AC in address
+            LDA = 32;  //Loads address to AC
+            ADD = 48;  //Adds address to AC
+            OR  = 64;  //Bitwise OR with AC and address
+            AND = 80;  //Bitwise AND with AC and address
+            NOT = 96;  //Bitwise NOT on AC
+            JMP = 128; //Loads address to PC
+            JN  = 144; //Loads address to PC if AC is negative
+            JZ  = 160; //Loads address to PC if AC is zero
+            HLT = 240; //Stops execution""");
+
+    }
+
+    public void shlHELP(){
+
+        System.out.println("""
+            Neander Shell commands:
+
+            get:     receives a memory address and return the value stored in that address.
+            set:     receives an address and a value and updates the memory accordingly.
+            read:    receives a start address and an end address and returns memory addresses and values in that range.
+            write:   receives a starting address and an arbitrary ammount of values, and writes them in memory. stops if a negative number is entered.
+            run:     runs the program and displays its run time.
+            clear:   sets all memory addresses to zero. WARNING: this will also remove the default halt commands on addreses 127 and 255.
+            ac:      returns the current value stored in the accumulator.
+            fn:      returns the current value stored in the Negative Flag.
+            fz:      returns the current value stored in the Zero Flag.
+            opcodes: displays all opcodes.
+            help:    displays all shell commands.
+            quit:    ends the Neander Program.""");
 
     }
 }
