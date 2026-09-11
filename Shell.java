@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class Shell{
 
@@ -28,7 +29,7 @@ public class Shell{
 
             } catch(Exception e) {
 
-                System.out.println("Error: " + e.getMessage());
+                System.err.println("Error: " + e.getMessage());
 
             }
         }
@@ -40,27 +41,32 @@ public class Shell{
         System.out.print(">");
         String cmdfull = input.nextLine();
         String[] cmd = cmdfull.split("[\s]");
+        int cmdlen = cmd.length;
         System.out.println("");
         
-        if (cmd[0].equals("get")){
+        if (cmd[0].equals("get") && cmdlen == 2){
             
             shlGET(cmd[1]);}
 
-        else if (cmd[0].equals("set")){
+        else if (cmd[0].equals("set") && cmdlen == 3){
             
             shlSET(cmd[1], cmd[2]);}
 
-        else if (cmd[0].equals("read")){
+        else if (cmd[0].equals("read") && cmdlen == 3){
             
             shlREAD(cmd[1], cmd[2]);}
 
-        else if (cmd[0].equals("write")){
+        else if (cmd[0].equals("write") && cmdlen == 2){
             
-            shlWRITE(cmd[1]);}
+            shlWRITE(cmd[1]);
 
-        else if (cmd[0].equals("run")){
+        } else if (cmd[0].equals("run")){
 
             shlRUN();
+
+        } else if (cmd[0].equals("load")){
+
+            shlLOAD();
 
         } else if (cmd[0].equals("clear")){
             
@@ -89,6 +95,10 @@ public class Shell{
         } else if (cmd[0].equals("help")) {
             
             shlHELP();
+
+        } else {
+
+            throw new Exception("Invalid command or command syntax.");
 
         }
     }
@@ -156,6 +166,26 @@ public class Shell{
         os.runProgram(time);
 
         System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms");
+
+    }
+
+    public void shlLOAD(){
+
+        File exe = new File(".ndrbin");
+
+        if (!exe.exists()){
+            throw new Exception("No executable found.");
+        }
+
+        try (Scanner reader = new Scanner(exe)){
+
+            for (int i = 0; i < 256 && reader.hasNextInt(); i++){
+                os.ram.setAddress(i, (byte) reader.nextInt());
+            }
+
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
 
     }
 
