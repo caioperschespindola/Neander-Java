@@ -36,7 +36,7 @@ public class Shell{
         
     }
 
-    public void prompt(){
+    public void prompt() throws Exception{
 
         System.out.print(">");
         String cmdfull = input.nextLine();
@@ -169,7 +169,7 @@ public class Shell{
 
     }
 
-    public void shlLOAD(){
+    public void shlLOAD() throws Exception{
 
         File exe = new File(".ndrbin");
 
