@@ -1,6 +1,6 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.File;
 
 public class Shell{
 
@@ -20,6 +20,7 @@ public class Shell{
 
         ui.c = false;
 
+        clearScreen();
         System.out.println("Neander v1.3\nCompiled .jar for the Neander Virtual Machine.\nCreated by Prof. Raul F. Weber\nImplemented by Caio Persch Espindola\n\n");
 
         while (!ui.c){
@@ -40,6 +41,10 @@ public class Shell{
 
         System.out.print(">");
         String cmdfull = input.nextLine();
+
+        clearScreen();
+        System.out.println(">" + cmdfull);
+
         String[] cmd = cmdfull.split("[\s]");
         int cmdlen = cmd.length;
         System.out.println("");
@@ -98,7 +103,7 @@ public class Shell{
 
         } else {
 
-            throw new Exception("Invalid command or command syntax.");
+            throw new Exception("Invalid command or command syntax.\n");
 
         }
     }
@@ -112,6 +117,8 @@ public class Shell{
         else {
             System.out.println(os.ram.getAddress(adr));
         }
+
+        System.out.println();
 
     }
 
@@ -130,6 +137,8 @@ public class Shell{
         int nd = Integer.parseInt(end);
 
         os.ram.readMemory(st, nd);
+
+        System.out.println();
 
     }
 
@@ -156,6 +165,7 @@ public class Shell{
         os.ram.writeToMemory(st, data);
 
         input.nextLine(); //clears buffer
+        System.out.println();
 
     }
 
@@ -165,7 +175,7 @@ public class Shell{
 
         os.runProgram(time);
 
-        System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms");
+        System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms\n");
 
     }
 
@@ -184,14 +194,19 @@ public class Shell{
             }
 
         } catch (Exception e){
+
             throw new Exception(e.getMessage());
+
         }
+
+        System.out.println();
 
     }
 
     public void shlCLEAR(){
 
         os.ram.clear();
+        System.out.println();
 
     }
 
@@ -203,19 +218,19 @@ public class Shell{
 
     public void shlAC(){
 
-        System.out.println(os.getAC());
+        System.out.println(os.getAC() + "\n");
 
     }
 
     public void shlFN(){
 
-        System.out.println(os.getAC() < 0);
+        System.out.println((os.getAC() < 0) + "\n");
 
     }
 
     public void shlFZ(){
 
-        System.out.println(os.getAC() == 0);
+        System.out.println((os.getAC() == 0) + "\n");
 
     }
 
@@ -232,7 +247,7 @@ public class Shell{
             JMP = 128; //Loads address to PC
             JN  = 144; //Loads address to PC if AC is negative
             JZ  = 160; //Loads address to PC if AC is zero
-            HLT = 240; //Stops execution""");
+            HLT = 240; //Stops execution\n""");
 
     }
 
@@ -252,7 +267,14 @@ public class Shell{
             fz:      returns the current value stored in the Zero Flag.
             opcodes: displays all opcodes.
             help:    displays all shell commands.
-            quit:    ends the Neander Program.""");
+            quit:    ends the Neander Program.\n""");
+
+    }
+
+    public static void clearScreen(){
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
     }
 }
