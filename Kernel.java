@@ -7,8 +7,8 @@ public class Kernel {
     
     private int pc; //Current line to be executed
     
-    private boolean flagN = (ac < 0);
-    private boolean flagZ = (ac == 0);
+    private boolean flagN = (ac < 0); // Negative Flag
+    private boolean flagZ = (ac == 0); // Zero Flag
     
     private boolean running;
     
@@ -32,7 +32,8 @@ public class Kernel {
         return ac;
     }
 
-    public void runProgram(long time){
+    // runs each address in memory
+    public void runProgram(){
         
         int next;
         byte current;
@@ -73,6 +74,7 @@ public class Kernel {
         }
     }
 
+    // Checks if the given bytecode matches any opcode and calls the respective function
     private void execute(byte current, int next){
         switch (current){
             case NOP:
@@ -147,7 +149,7 @@ public class Kernel {
 
     private void cmdJN(int address){
         if (flagN){
-            pc = address -1;
+            pc = address - 1;
         } else {
             pc++;
         }
@@ -155,7 +157,7 @@ public class Kernel {
 
     private void cmdJZ(int address){
         if (flagZ){
-            pc = address -1;
+            pc = address - 1;
         } else {
             pc++;
         }
