@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+
 
 public class Kernel {
     private byte ac = Mem.sign(0); //Acumulator register
@@ -9,8 +9,8 @@ public class Kernel {
     private int mc; //Current memory partition
     private int fc; //Function call register
     
-    private boolean flagN = (ac < 0);
-    private boolean flagZ = (ac == 0);
+    private boolean flagN = (ac < 0); // Negative Flag
+    private boolean flagZ = (ac == 0); // Zero Flag
     
     private boolean running;
     
@@ -57,6 +57,8 @@ public class Kernel {
         mc = 0;
         
         for (pc = 0; running == true; pc++){
+
+            current = ram.getAddress(pc);
             
             if (pc == 255) //Auto halt to avoid index error
                 {cmdHLT();}
@@ -174,22 +176,24 @@ public class Kernel {
     }
 
     private void cmdJMP(int address){
-
-        pc = address;
-
+        pc = address - 1;
     }
 
     private void cmdJN(int address){
 
         if (flagN){
-            cmdJMP(address);
+            pc = address - 1;
+        } else {
+            pc++;
         }
     }
 
     private void cmdJZ(int address){
 
         if (flagZ){
-            cmdJMP(address);
+            pc = address - 1;
+        } else {
+            pc++;
         }
     }
 
