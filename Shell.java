@@ -105,10 +105,6 @@ public class Shell{
 
             throw new RuntimeException("Invalid command or command syntax.\n");
 
-        } else if (cmd.equals("mc")){
-
-            System.out.println(os.getMC());
-
         }
     }
 
@@ -116,8 +112,11 @@ public class Shell{
 
         int adr = Integer.parseInt(address);
 
-        System.out.print("$$");
-        int adr = input.nextInt();
+        if (adr < 128)
+            System.out.println(Mem.unsign(os.ram.getAddress(adr)));
+        else {
+            System.out.println(os.ram.getAddress(adr));
+        }
 
         System.out.println();
 
@@ -128,7 +127,7 @@ public class Shell{
         int adr = Integer.parseInt(address);
         byte val = Mem.sign(Integer.parseInt(value));
 
-        os.ram.setAddress(par, adr, val);
+        os.ram.setAddress(adr, val);
 
     }
 
@@ -162,25 +161,19 @@ public class Shell{
 
             i++;
         }
-            
-        os.ram.writeToMemory(par, start, data);
+        
+        os.ram.writeToMemory(st, data);
 
         input.nextLine(); //clears buffer
         System.out.println();
 
     }
 
-    public void shlCLEAR(){
-        
-        System.out.print("$$");
-        int par = input.nextInt();
-        
-        os.ram.clear(par);
-
-        input.nextLine(); //clears buffer
-    }
-
     public void shlRUN(){
+
+        long time = System.nanoTime();
+
+        os.runProgram();
 
         System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms\n");
 
