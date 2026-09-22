@@ -1,12 +1,11 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
 
 public class Shell{
 
     private Scanner input = new Scanner(System.in);
+    private boolean c; //condition for closing the program
 
     static Shell ui;
     Kernel os;
@@ -19,10 +18,12 @@ public class Shell{
 
         ui = new Shell();
 
+        ui.c = false;
+
         clearScreen();
         System.out.println("Neander v1.3\nCompiled .jar for the Neander Virtual Machine.\nCreated by Prof. Raul F. Weber\nImplemented by Caio Persch Espindola\n\n");
 
-        while (true){
+        while (!ui.c){
             try {
 
                 ui.prompt();
@@ -36,8 +37,7 @@ public class Shell{
         
     }
 
-    // Receives a shell command from System.in and calls the respective function
-    public void prompt() throws FileNotFoundException{
+    public void prompt() throws Exception{
 
         System.out.print(">");
         String cmdfull = input.nextLine();
@@ -103,11 +103,7 @@ public class Shell{
 
         } else {
 
-            throw new RuntimeException("Invalid command or command syntax.\n");
-
-        } else if (cmd.equals("mc")){
-
-            System.out.println(os.getMC());
+            throw new Exception("Invalid command or command syntax.\n");
 
         }
     }
@@ -182,16 +178,20 @@ public class Shell{
 
     public void shlRUN(){
 
+        long time = System.nanoTime();
+
+        os.runProgram(time);
+
         System.out.println("Run Time: " + (double)((System.nanoTime() - time)/1000000.0) + " ms\n");
 
     }
 
-    public void shlLOAD() throws FileNotFoundException{
+    public void shlLOAD() throws Exception{
 
         File exe = new File(".ndrbin");
 
         if (!exe.exists()){
-            throw new FileNotFoundException("No executable found.");
+            throw new Exception("No executable found.");
         }
 
         try (Scanner reader = new Scanner(exe)){
@@ -202,7 +202,7 @@ public class Shell{
 
         } catch (Exception e){
 
-            throw new RuntimeException(e.getMessage());
+            throw new Exception(e.getMessage());
 
         }
 
@@ -219,7 +219,7 @@ public class Shell{
 
     public void shlQUIT(){
 
-        System.exit(0);
+        c = true;
 
     }
 

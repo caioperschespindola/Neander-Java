@@ -73,7 +73,7 @@ public class Compiler{
             }
         }
 
-        try { // Writes the bites to the hidden executable file
+        try {
             FileWriter output = new FileWriter(".ndrbin");
 
             for (Integer b : compiled_code){
