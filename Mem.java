@@ -16,40 +16,49 @@ public class Mem {
         memory[0][diskSize-1] = sign(240); //Default halt
     }
 
-    public static int unsign(byte a){ // takes (-128 to +127) and converts to (0 to 255)
+    // takes (-128 to +127) and converts to (0 to 255)
+    public static int unsign(byte a){
         int b = (a & 0xFF);
         return b;
     }
 
-    public static byte sign(int a){ // takes (0 to 255) and converts to (-128 to +127)
+     // takes (0 to 255) and converts to (-128 to +127)
+    public static byte sign(int a){
         byte b = (byte) a;
         return b;
     }
 
-    public void setAddress(int address, byte value){
-        if (address < diskSize && address >= 0){
-            memory[address] = sign(value);
-        } else {
-            throw new ArrayIndexOutOfBoundsException("Index " + address + " out of bounds for length " + diskSize);
-        }
+    public void setAddress(int partition, int address, byte value){
+
+        if (address < diskSize && address >= 0 && partition < diskSize && partition >= 0)
+            memory[partition][address] = sign(value);
+
     }
 
-    public byte getAddress(int address){
-        return memory[address];
+    public byte getAddress(int partition, int address){
+        
+        return memory[partition][address];
+
     }
 
-    public void clear(){
-        for (int i = 0; i < diskSize-1; i++){memory[i] = 0;}
-        System.out.println("Memory cleared");
+    public void clear(int partition){
+
+        for (int i = 0; i < diskSize-1; i++)
+
+            memory[partition][i] = 0;
+
+        System.out.println("Memory cleared on partition " + partition);
+
     }
     
-    public void writeToMemory(int start, ArrayList<Integer> data){
-        for (int i = 0; i < data.size()-1; i++){
-            setAddress(start+i, sign(data.get(i)));
-        }
+    public void writeToMemory(int partition, int start, ArrayList<Integer> data){
+
+        for (int i = 0; i < data.size()-1; i++)
+            setAddress(partition, start+i, sign(data.get(i)));
+        
     }
 
-    public void readMemory(int start, int end){
+    public void readMemory(int partition, int start, int end){
         for (int i = start; i <= end; i++) {
             System.out.println(i + ": " + getAddress(partition, i));
         }

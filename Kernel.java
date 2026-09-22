@@ -9,8 +9,8 @@ public class Kernel {
     private int mc; //Current memory partition
     private int fc; //Function call register
     
-    private boolean flagN = (ac < 0);
-    private boolean flagZ = (ac == 0);
+    private boolean flagN = (ac < 0); // Negative Flag
+    private boolean flagZ = (ac == 0); // Zero Flag
     
     private boolean running;
     
@@ -42,8 +42,12 @@ public class Kernel {
         return ac;
     }
 
-    public void runProgram(long time){
-        
+    public int getMC(){
+        return mc;
+    }
+
+    public void runProgram(){
+        int third;
         int next;
         byte current;
 
@@ -81,7 +85,7 @@ public class Kernel {
         }
     }
 
-    private void execute(byte current, int next){
+    private void execute(byte current, int next, int third){
         switch (current){
             case NOP:
                 break;
@@ -178,7 +182,7 @@ public class Kernel {
     private void cmdJN(int address){
 
         if (flagN){
-            pc = address -1;
+            pc = address - 1;
         } else {
             pc++;
         }
@@ -187,7 +191,7 @@ public class Kernel {
     private void cmdJZ(int address){
 
         if (flagZ){
-            pc = address -1;
+            pc = address - 1;
         } else {
             pc++;
         }
